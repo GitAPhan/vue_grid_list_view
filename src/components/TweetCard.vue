@@ -1,10 +1,6 @@
 <template>
-  <div v-if="view_status === 'Card View'" class="tweet_card">
-    <p>{{ tweet_content }}</p>
-    <h4>{{ tweet_user }}</h4>
-    <h5>{{ tweet_date }}</h5>
-  </div>
-  <div v-else class="tweet_list">
+  <div>
+    <!-- to display content passed down by the parent -->
     <p>{{ tweet_content }}</p>
     <h4>{{ tweet_user }}</h4>
     <h5>{{ tweet_date }}</h5>
@@ -14,11 +10,11 @@
 <script>
 export default {
   name: "tweet-card",
+  // declare prop to be expected 
   props: {
     tweet_content: String,
     tweet_user: String,
     tweet_date: String,
-    view_status: String,
   },
 };
 </script>

@@ -1,13 +1,19 @@
 <template>
   <div id="app">
-    <section id="tweet_location">
+    <!-- section containing tweets class is defined here for card view as default -->
+    <section class="section_card_view" id="tweet_location">
+      <!-- button to toggle between card view and list view -->
       <button id="toggle_view_button" @click="toggle_view">Card View</button>
+  <!-- for loop to generate tweets from the data below -->
       <tweet-card
-      v-for="tweet in tweets" :key="tweet.tweet_content" 
-      :view_status="toggle_view"
-      :tweet_content="tweet.tweet_content"
-      :tweet_user="tweet.tweet_user"
-      :tweet_date="tweet.tweet_date"> </tweet-card>
+        class="tweet_card"
+        v-for="tweet in tweeter"
+        :key="tweet.tweet_content"
+        :tweet_content="tweet.tweet_content"
+        :tweet_user="tweet.tweet_user"
+        :tweet_date="tweet.tweet_date"
+      >
+      </tweet-card>
     </section>
   </div>
 </template>
@@ -19,28 +25,19 @@ export default {
   components: {
     TweetCard,
   },
-  methods: {
-    toggle_view() {
-      var toggle_view_button = document.getElementById('toggle_view_button');
-      if(toggle_view_button.innerText === "Card View") {
-        toggle_view_button.innerText = "List View";
-        return "List View"
-      } else if(toggle_view_button.innerText === "List View") {
-        toggle_view_button.innerText = "Card View";
-        return "Card View"
-      }
-    }
-  },
   data() {
     return {
-      tweets: [
+      // variable to store view status
+      cardView: "card_view",
+      // tweet data entered manually
+      tweeter: [
         {
           tweet_content: "This is a sample tweet #realism",
           tweet_user: "randomUser123",
           tweet_date: "03/12/16",
         },
         {
-          tweet_content: "This is aother sample tweet #realism",
+          tweet_content: "This is another sample tweet #realism",
           tweet_user: "weirdUser123",
           tweet_date: "04/11/17",
         },
@@ -87,6 +84,41 @@ export default {
       ],
     };
   },
+  methods: {
+    // function to change view
+    toggle_view() {
+      var toggle_view_button = document.getElementById("toggle_view_button");
+      // conditional to determine if the current status card view or list view
+      if (toggle_view_button.innerText === "Card View") {
+        // change innertext of button
+        toggle_view_button.innerText = "List View";
+        // define and toggle class of section container containing tweets
+        var tweet_section = document.getElementById('tweet_location');
+        tweet_section.classList.toggle("section_card_view");
+        tweet_section.classList.toggle("section_list_view");
+        // define and toggle class of individual tweet card
+        var tweet_cards = document.getElementsByClassName("tweet_card");
+        for (var i = 0; i < tweet_cards.length; i = i-i) {
+          tweet_cards[i].classList.toggle("tweet_list");
+          tweet_cards[i].classList.toggle("tweet_card");
+        }
+        // conditional to change from list view back to card view
+      } else if (toggle_view_button.innerText === "List View") {
+        // change innertext of button
+        toggle_view_button.innerText = "Card View";        
+        // define and toggle class of section container containing tweets
+        tweet_section = document.getElementById('tweet_location');
+        tweet_section.classList.toggle("section_card_view");
+        tweet_section.classList.toggle("section_list_view");
+        // define and toggle class of individual tweet card
+        tweet_cards = document.getElementsByClassName("tweet_list");
+        for (i = 0; i < tweet_cards.length; i = i-i) {
+          tweet_cards[i].classList.toggle("tweet_card");
+          tweet_cards[i].classList.toggle("tweet_list");
+        }
+      }
+    },
+  },
 };
 </script>
 
@@ -98,5 +130,40 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+#tweet_location {
+  padding: 50px;
+  background-color: rgba(135, 207, 235, 0.705);
+  border-radius: 25px;
+}
+
+.tweet_card {
+  background-color: rgba(255, 250, 250, 0.493);
+  border-radius: 25px;
+  padding: 15px;
+}
+
+.section_card_view {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  column-gap: 10px;
+  row-gap: 10px;
+}
+
+.tweet_list {
+  background-color: rgba(255, 250, 250, 0.493);
+  border-radius: 25px;
+padding-left: 20px;
+}
+
+.section_list_view {
+text-align: left;
+}
+
+#toggle_view_button {
+  position: absolute;
+  left: calc(50% - 40px);
+  top: 10px;
 }
 </style>
